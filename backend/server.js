@@ -68,7 +68,7 @@ app.post('/api/checksheets', async (req, res) => {
   }
 });
 
-app.put('/api/checksheets', async (req, res) => {
+app.put('/api/checksheets/:checksheetId', async (req, res) => {
   const { id, category, checksheetName, status } = req.body;
   try {
     const result = await pool.query(
@@ -82,7 +82,7 @@ app.put('/api/checksheets', async (req, res) => {
       WHERE
         id = $4
       `,
-      [category, checksheetName, status, id]
+      [category, checksheetName, status, req.params.checksheetId]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -91,7 +91,31 @@ app.put('/api/checksheets', async (req, res) => {
   }
 });
 
+// app.put('/api/checksheets', async (req, res) => {
+//   const { id, category, checksheetName, status } = req.body;
+//   try {
+//     const result = await pool.query(
+//       `UPDATE 
+//         checksheet_list 
+//       SET
+//         category = $1, 
+//         checksheet_name = $2, 
+//         status = $3,
+//         updated_at = NOW()
+//       WHERE
+//         id = $4
+//       `,
+//       [category, checksheetName, status, id]
+//     );
+//     res.json(result.rows[0]);
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: 'DB error' });
+//   }
+// });
+
 // 코드 마스터 불러오기
+
 app.get('/api/code', async (req, res) => {
   const client = await pool.connect(); // Pool에서 클라이언트 가져오기
 
@@ -117,70 +141,6 @@ app.get('/api/code', async (req, res) => {
     client.release(); // 클라이언트 반환
   }
 });
-
-
-// // 체크시트 저장
-// app.post('/api/checksheet/save', async (req, res) => {
-//   const client = await pool.connect();
-//   const { id, checksheet_name, category, sections } = req.body;
-
-//   try {
-//     await client.query('BEGIN');
-
-//     // // 1️⃣ 체크시트 등록
-//     // const csResult = await client.query(
-//     //   `INSERT INTO checksheet_list (category, checksheet_name)
-//     //    VALUES ($1, $2) RETURNING id`,
-//     //   [category, checksheet_name]
-//     // );
-//     // const checksheetId = csResult.rows[0].id;
-
-//     const checksheetId = id;
-
-//     // 2️⃣ 섹션 등록
-//     for (let sIndex = 0; sIndex < sections.length; sIndex++) {
-//       const section = sections[sIndex];
-//       const secResult = await client.query(
-//         `INSERT INTO checksheet_section (checksheet_id, title, text, sort_order)
-//          VALUES ($1, $2, $3, $4) RETURNING id`,
-//         [checksheetId, section.title, section.text, sIndex]
-//       );
-//       const sectionId = secResult.rows[0].id;
-
-//       // 3️⃣ 체크리스트 등록
-//       for (let cIndex = 0; cIndex < section.checklists.length; cIndex++) {
-//         const checklist = section.checklists[cIndex];
-//         const clResult = await client.query(
-//           `INSERT INTO checksheet_checklist (section_id, title, text, sort_order)
-//            VALUES ($1, $2, $3, $4) RETURNING id`,
-//           [sectionId, checklist.title, checklist.text, cIndex]
-//         );
-//         const checklistId = clResult.rows[0].id;
-
-//         // 4️⃣ 항목 등록
-//         for (let iIndex = 0; iIndex < checklist.items.length; iIndex++) {
-//           const item = checklist.items[iIndex];
-//           await client.query(
-//             `INSERT INTO checksheet_item (checklist_id, title, type, value, sort_order)
-//              VALUES ($1, $2, $3, $4, $5)`,
-//             [checklistId, item.title, item.type, item.value, iIndex]
-//           );
-//         }
-//       }
-//     }
-
-//     await client.query('COMMIT');
-//     res.json({ success: true });
-//   } catch (err) {
-//     await client.query('ROLLBACK');
-//     console.error(err);
-//     res.status(500).json({ success: false, error: err.message });
-//   } finally {
-//     client.release();
-//   }
-// });
-
-
 
 // 섹션 추가
 app.post('/api/checksheet/:checksheetId/sections', async (req, res) => {
@@ -242,11 +202,11 @@ app.delete('/api/checklist/:checklistId', async (req, res) => {
 
 // 항목 추가
 app.post('/api/checklist/:checklistId/items', async (req, res) => {
-  const { title, type, value, sort_order } = req.body;
+  const { title, type, value, options, sort_order } = req.body;
   const result = await pool.query(
-    `INSERT INTO checksheet_item (checklist_id, title, type, value, sort_order)
-     VALUES ($1,$2,$3,$4,$5) RETURNING *`,
-    [req.params.checklistId, title, type, value, sort_order]
+    `INSERT INTO checksheet_item (checklist_id, title, type, value, options, sort_order)
+     VALUES ($1,$2,$3,$4,$5,$6) RETURNING *`,
+    [req.params.checklistId, title, type, value, options, sort_order]
   );
   res.json(result.rows[0]);
 });
@@ -269,8 +229,7 @@ app.delete('/api/item/:itemId', async (req, res) => {
   res.json({ success: true });
 });
 
-
-
+// 체크시트 정보 취득
 app.get('/api/checksheet/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -309,7 +268,7 @@ app.get('/api/checksheet/:id', async (req, res) => {
 
       for (const checklist of checklists) {
         const itemsResult = await pool.query(
-          `SELECT id, title, type, value, sort_order 
+          `SELECT id, title, type, value, options, sort_order 
              FROM checksheet_item 
             WHERE checklist_id = $1 
             ORDER BY sort_order ASC`,
