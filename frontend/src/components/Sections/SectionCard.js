@@ -1,20 +1,16 @@
-
-
-
-
-
 import React, { useState, useEffect } from 'react';
-import { Card, Button, Checkbox, Input, Select, Space, message } from 'antd';
+import { Card, Button, Checkbox, Input, Select, Space, message, Modal } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import '../../custom.css'
 import axios from 'axios';
 import RichTextEditor from '../RichTextEditor';
+import ChecksheetItemForm from 'components/Forms/ChecksheetItemForm';
 
 // 체크리스트 항목 컴포넌트
 const ChecklistItem = ({ item, onChange, onDelete }) => (
   <div style={{ display: 'flex', alignItems: 'center', marginBottom: 8 }}>
     <span style={{ marginRight: 8 }}>{item.title}</span>
-    {item.type === 'text' && (
+    {item.type === 'input' && (
       <Input
         placeholder="텍스트 입력"
         value={item.value}
@@ -35,7 +31,7 @@ const ChecklistItem = ({ item, onChange, onDelete }) => (
         placeholder="선택"
         value={item.value}
         onChange={val => onChange('value', val)}
-        options={[{ value: 'A' }, { value: 'B' }]}
+        options={item.options && item.options.map((elm) => ({value : elm}))}
         style={{ width: 120, marginRight: 8 }}
       />
     )}
@@ -46,6 +42,13 @@ const ChecklistItem = ({ item, onChange, onDelete }) => (
 const SectionCard = ({ initialData, onDelete }) => {
   const [sectionInfo, setSectionInfo] = useState(initialData || { title: '', text: '' });
   const [checklists, setChecklists] = useState(initialData?.checklists || []);
+  const [selectedChecklist, setSelectedChecklist] = useState(null);  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleAddItem = (item, checklistId) => {
+    addItem(checklistId, item);
+    setIsModalOpen(false);
+  };
 
   // -------------------------------
   // 섹션 수정 API
@@ -107,12 +110,13 @@ const SectionCard = ({ initialData, onDelete }) => {
   // -------------------------------
   // 항목 추가/삭제/수정
   // -------------------------------
-  const addItem = async (checklistId) => {
+    const addItem = async (checklistId, data) => {
     try {
       const res = await axios.post(`http://localhost:5000/api/checklist/${checklistId}/items`, {
-        title: '새 항목',
-        type: 'text',
-        value: '',
+        title: data.title,
+        type: data.type,
+        value: null,
+        options: data.options,
         sort_order: checklists.find(c => c.id === checklistId).items.length
       });
       setChecklists(prev =>
@@ -215,12 +219,13 @@ const SectionCard = ({ initialData, onDelete }) => {
             }
             extra={
               <Space>
-                <Button size="small" style={{padding : "15px 8px"}} onClick={() => addItem(cl.id)}>항목 추가</Button>
+                <Button size="small" style={{padding : "15px 8px"}} onClick={() => { setIsModalOpen(true); setSelectedChecklist(cl.id); }}>항목 추가</Button>
                 <Button danger size="small" style={{padding : "15px 8px"}} onClick={() => deleteChecklistAPI(cl.id)}>삭제</Button>
               </Space>
             }
             style={{ marginBottom: 16 }}
           >
+            <div style={{ padding : "0 23px"}}>
             {cl.items.map(item => (
               <ChecklistItem
                 key={item.id}
@@ -229,6 +234,7 @@ const SectionCard = ({ initialData, onDelete }) => {
                 onDelete={() => deleteItemAPI(cl.id, item.id)}
               />
             ))}
+            </div>
           </Card>
         ))}
       </div>
@@ -236,6 +242,17 @@ const SectionCard = ({ initialData, onDelete }) => {
       <Button type="dashed" onClick={addChecklist} block icon={<PlusOutlined />}>
         체크리스트 추가
       </Button>
+
+      <Modal
+        title="항목 추가"
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={null} // 모달 하단 버튼 제거, AddItemForm의 버튼 사용
+        width={600}
+      >
+        <ChecksheetItemForm onSubmit={handleAddItem} selectedChecklistKey={selectedChecklist} />
+      </Modal>
+
     </Card>
   );
 };

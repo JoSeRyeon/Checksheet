@@ -86,8 +86,8 @@ const CheckcheetListPage = () => {
     // 체크시트 업데이트
     async function updateChecksheet(data) {
         console.log(data);
-
-        await axios.put('http://localhost:5000/api/checksheets', data)
+        const id = data.id;
+        await axios.put(`http://localhost:5000/api/checksheets/${id}`, data)
             .then(res => {
                 success('수정이 완료되었습니다.');
             })
@@ -153,6 +153,23 @@ const CheckcheetListPage = () => {
         closeModal();
     };
 
+    // 체크시트 상세 작성 버튼 클릭 핸들러
+const handleDetailButtonClick = () => {
+    if (!hasSelected) {
+        return warning('목록에서 체크시트를 선택한 후 버튼을 눌러 주세요.');
+    }
+
+    // 선택된 체크시트 정보 찾기
+    const selectedChecksheet = data.find(elm => elm.id === selectedRowKeys[0]);
+
+    // /edit 페이지로 state 전달
+    navigate('/edit', { state: { 
+        selectedChecksheet, 
+        selectedChecksheetId: selectedChecksheet.id 
+    } });
+};
+
+
     return (
         <>
             {contextHolder}
@@ -166,7 +183,8 @@ const CheckcheetListPage = () => {
                 <Flex align="center" gap="middle">
                     <Button type="primary" onClick={handleCreateButtonClick}>신규작성</Button>
                     <Button onClick={handleEditButtonClick}>편집</Button>
-                    <Button onClick={() => handleButtonClick("edit")}>체크시트 상세 작성</Button>
+                    <Button onClick={handleDetailButtonClick}>체크시트 상세 작성</Button>
+
                 </Flex>
             </Flex>
 
