@@ -1,0 +1,10 @@
+/* custom.css */
+.big-checkbox .ant-checkbox-inner {
+  width: 24px;   /* 체크박스 너비 */
+  height: 24px;  /* 체크박스 높이 */
+}
+
+.big-checkbox .ant-checkbox-inner::after {
+  /* 체크표시(√) 스케일링 */
+  transform: rotate(45deg) scale(1.5) translate(-30%, -46%);
+}
