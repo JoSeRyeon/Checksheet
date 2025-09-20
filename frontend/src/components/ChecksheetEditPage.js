@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import SectionCard from './Sections/SectionCard';
 import { Layout, Input, Button, Space, message } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 const { Header, Content, Footer } = Layout;
 
 const CheckcheetEditPage = () => {
   const location = useLocation();
+   const navigate = useNavigate();
   const { selectedChecksheet, selectedChecksheetId } = location.state || {};
 
   const [sectionCards, setSectionCards] = useState([]);
@@ -38,7 +40,7 @@ const CheckcheetEditPage = () => {
   // -------------------
   async function updateChecksheet(id, value, data) {
     setChecksheetName(value);
-    await axios.put(`http://localhost:5000/api/checksheets/${id}`, {
+    await axios.put(`http://localhost:5000/api/checksheet/${id}`, {
       category : data.category,
       checksheetName : value,
       status : data.status,
@@ -55,7 +57,7 @@ const CheckcheetEditPage = () => {
 
   
   // -------------------
-  // 2️⃣ 섹션 추가/삭제
+  // 2️⃣ 섹션 추가
   // -------------------
   const addSectionCard = async () => {
     try {
@@ -76,7 +78,7 @@ const CheckcheetEditPage = () => {
   // -------------------
   const deleteSectionCard = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/section/${id}`);
+      await axios.delete(`http://localhost:5000/api/checksheet/section/${id}`);
       setSectionCards(prev => prev.filter(sc => sc.id !== id));
     } catch (err) {
       console.error(err);
@@ -84,31 +86,33 @@ const CheckcheetEditPage = () => {
     }
   };
 
-  return (
-    <Layout style={{ minHeight: '100vh' }}>
-        <Header style={{ display: 'flex', gap: 12, padding: 10, background: '#f5f5f5' }} >
-        <Input
-          size='large'
-          placeholder="체크시트명을 입력하세요"
-          value={checksheetName}
-          updateChecksheet
-          onChange={e => updateChecksheet(selectedChecksheetId, e.target.value, selectedChecksheet)}
-        />
-        <Button type="primary" onClick={addSectionCard}>섹션 추가</Button>
-      </Header>
+    const handleGoBack = () => {
+    navigate(-1); // 이전 페이지로
+  };
 
-      <Content style={{ margin: '0 24px 16px'}}>
-        <Space direction="vertical" style={{ width: '100%' }} size="large">
+  return (
+      <Layout style={{ minHeight: '100vh' }}>
+        <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', position: 'fixed', width: '100%', top: 0, zIndex: 1000, background: '#fff', boxShadow: '0 2px 8px #f0f1f2' }}>
+          <Button icon={<ArrowLeftOutlined />} onClick={handleGoBack}>뒤로가기</Button>
+          <div style={{ fontSize : "22px", fontWeight : "bold", margin : "0 10px" }}>{checksheetName}</div>
+        </Header>
+
+        <Content style={{ marginTop: 64, padding: '24px' }}>
+          <Space direction="vertical" style={{ width: '100%' }} size="large">
+            <div>
+              <Button onClick={addSectionCard}>섹션 추가</Button>
+            </div>
           {sectionCards.map(sc => (
             <SectionCard
               key={sc.id}
               initialData={sc.data}
+              mode="edit"
               onDelete={() => deleteSectionCard(sc.id)}
             />
           ))}
         </Space>
-      </Content>
-    </Layout>
+        </Content>
+      </Layout>
   );
 };
 

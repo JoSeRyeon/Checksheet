@@ -1,13 +1,31 @@
-body {
+html, body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* 가로 스크롤 방지 */
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+
+:root {
+  /* 메인 포인트 색상 */
+  --color-primary: #6f4af6;
+  --color-primary-hover: #5a38d0;
+  /* --color-primary: #1E9E82; */
+  /* --color-primary-hover: #16836B; */
+
+  /* 텍스트 */
+  --color-text-main: #333333;
+  --color-text-sub:  #444444;
+  --color-text-active: var(--color-primary);
+
+  /* 배경 */
+  --color-info-bg: rgba(255, 255, 255, 0.85);
+  --color-tag-bg:  rgba(111, 74, 246, 0.1);
+  /* --color-tag-bg: rgba(30, 158, 130, 0.1); */
+  --color-shadow:  rgba(0, 0, 0, 0.1);
+
+    /* 버튼 그림자 */
+  --color-shadow-primary: rgba(111, 74, 246, 0.25);
+  /* --color-shadow-primary: rgba(30, 158, 130, 0.1); */
 }

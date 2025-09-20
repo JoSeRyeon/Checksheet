@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, Flex, Table, Tag, Modal, message } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate, Outlet } from 'react-router-dom';
 import ChecksheetInputForm from './Forms/ChecksheetInputForm';
+import StickyPageHeader from './StickyPageHeader';
 
 const columns = [
     { title: '카테고리', dataIndex: 'category' },
@@ -62,7 +64,7 @@ const CheckcheetListPage = () => {
     ============================== API 요청용 함수 START ============================== */
     // 체크시트 리스트 취득
     async function fetchChecksheetList(data) {
-        axios.get('http://localhost:5000/api/checksheets')
+        axios.get('http://localhost:5000/api/checksheet')
             .then(res => {
                 setData(res.data);
             })
@@ -73,7 +75,7 @@ const CheckcheetListPage = () => {
     async function createChecksheet(data) {
         console.log(data);
 
-        await axios.post('http://localhost:5000/api/checksheets', data)
+        await axios.post('http://localhost:5000/api/checksheet', data)
             .then(res => {
                 success('체크시트가 등록되었습니다.');
             })
@@ -87,7 +89,7 @@ const CheckcheetListPage = () => {
     async function updateChecksheet(data) {
         console.log(data);
         const id = data.id;
-        await axios.put(`http://localhost:5000/api/checksheets/${id}`, data)
+        await axios.put(`http://localhost:5000/api/checksheet/${id}`, data)
             .then(res => {
                 success('수정이 완료되었습니다.');
             })
@@ -154,39 +156,68 @@ const CheckcheetListPage = () => {
     };
 
     // 체크시트 상세 작성 버튼 클릭 핸들러
-const handleDetailButtonClick = () => {
-    if (!hasSelected) {
-        return warning('목록에서 체크시트를 선택한 후 버튼을 눌러 주세요.');
-    }
+    const handleDetailButtonClick = () => {
+        if (!hasSelected) {
+            return warning('목록에서 체크시트를 선택한 후 버튼을 눌러 주세요.');
+        }
 
-    // 선택된 체크시트 정보 찾기
-    const selectedChecksheet = data.find(elm => elm.id === selectedRowKeys[0]);
+        // 선택된 체크시트 정보 찾기
+        const selectedChecksheet = data.find(elm => elm.id === selectedRowKeys[0]);
 
-    // /edit 페이지로 state 전달
-    navigate('/edit', { state: { 
-        selectedChecksheet, 
-        selectedChecksheetId: selectedChecksheet.id 
-    } });
-};
+        // /edit 페이지로 state 전달
+        navigate('/edit', {
+            state: {
+                selectedChecksheet,
+                selectedChecksheetId: selectedChecksheet.id
+            }
+        });
+    };
 
 
     return (
         <>
             {contextHolder}
 
-            <Flex gap="middle" vertical>
-                <Flex align="center" gap="middle">
-                </Flex>
+            <div>
+                <StickyPageHeader
+                    title="체크시트 일람"
+                    subtitle={`${data.length} Total`}
+                    width="calc(100% - 90px)"
+                    actions={[
+                        {
+                            label: "신규 작성",
+                            type: "dashed",
+                            icon: <PlusOutlined />,
+                            onClick: () => handleCreateButtonClick(),
+                        },
+                        {
+                            label: "편집",
+                            color: "primary",
+                            variant: "filled",
+                            onClick: () => handleEditButtonClick(),
+                        },
+                        {
+                            label: "체크시트 상세 작성",
+                            type: "primary",
+                            onClick: () => handleDetailButtonClick(),
+                        },
+                    ]}
+                />
 
-                <Table rowKey="id" rowSelection={{ type: 'radio', ...rowSelection }} columns={columns} dataSource={data} />
-
-                <Flex align="center" gap="middle">
-                    <Button type="primary" onClick={handleCreateButtonClick}>신규작성</Button>
-                    <Button onClick={handleEditButtonClick}>편집</Button>
-                    <Button onClick={handleDetailButtonClick}>체크시트 상세 작성</Button>
-
-                </Flex>
-            </Flex>
+                <div style={{marginTop : "60px"}}>
+                <Table
+                    rowKey="id"
+                    rowSelection={{ type: 'radio', ...rowSelection }}
+                    columns={columns}
+                    dataSource={data}
+                    onRow={(record) => ({
+                        onClick: () => {
+                            setSelectedRowKeys([record.id]);
+                        },
+                    })}
+                />
+                </div>
+            </div>
 
             <Modal
                 title="체크시트 신규 등록"

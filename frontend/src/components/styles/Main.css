@@ -1,0 +1,58 @@
+.hero-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: url('../../assets/purple_note.jpeg') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-left: 8%;
+  color: var(--color-text-main);
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 0.5em;
+  color: var(--color-text-main);
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  margin-bottom: 1.5em;
+  color: var(--color-text-sub);
+}
+
+.contact-btn {
+  background: var(--color-primary);
+  padding: 0.75em 1.5em;
+  border: none;
+  border-radius: 30px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(111,74,246,0.3);
+  transition: background 0.3s;
+}
+.contact-btn:hover {
+  background: var(--color-primary-hover);
+}
+
+.info-box {
+  background: var(--color-info-bg);
+  color: var(--color-text-main);
+  margin-top: 2rem;
+  padding: 1.8rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px var(--color-shadow);
+  backdrop-filter: blur(4px);
+}
+
+.tags span {
+  background: var(--color-tag-bg);
+  color: var(--color-text-sub);
+  padding: 0.4em 0.8em;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  margin-right: 3px;
+}
