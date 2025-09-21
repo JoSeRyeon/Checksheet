@@ -19,6 +19,7 @@ const ChecksheetItemForm = ({ onSubmit, initialValues, selectedChecklistKey }) =
       setOptions([]);
       setButtons([]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialValues, form]);
 
   const addOption = (value) => {
@@ -106,9 +107,9 @@ const ChecksheetItemForm = ({ onSubmit, initialValues, selectedChecklistKey }) =
             renderItem={(opt, idx) => (
               <List.Item
                 actions={[
-                  <a onClick={() => setOptions(prev => prev.filter((_, i) => i !== idx))}>
+                  <Button type='text' onClick={() => setOptions(prev => prev.filter((_, i) => i !== idx))}>
                     삭제
-                  </a>,
+                  </Button>,
                 ]}
               >
                 {opt}
@@ -136,7 +137,7 @@ const ChecksheetItemForm = ({ onSubmit, initialValues, selectedChecklistKey }) =
             renderItem={(btn, idx) => (
               <List.Item
                 actions={[
-                  <a onClick={() => setButtons(prev => prev.filter((_, i) => i !== idx))}>삭제</a>,
+                  <Button type='text' onClick={() => setButtons(prev => prev.filter((_, i) => i !== idx))}>삭제</Button>,
                 ]}
               >
                 {btn}

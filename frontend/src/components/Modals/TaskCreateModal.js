@@ -128,6 +128,7 @@ export default function TaskCreateModal({ open, onClose, onSuccess }) {
     } else {
       form.resetFields();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const fetchChecksheetList = async () => {

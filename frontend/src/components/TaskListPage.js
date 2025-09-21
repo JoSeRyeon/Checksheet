@@ -32,6 +32,7 @@ const TaskListPage = () => {
       console.error(err);
       error('작업 목록을 가져오지 못했습니다.');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   // 선택 변경
