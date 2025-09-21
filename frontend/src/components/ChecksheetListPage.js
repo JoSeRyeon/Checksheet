@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Button, Flex, Table, Tag, Modal, message } from 'antd';
+import { Table, Tag, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import { useNavigate, Outlet } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ChecksheetInputForm from './Forms/ChecksheetInputForm';
 import StickyPageHeader from './StickyPageHeader';
 
@@ -111,9 +111,9 @@ const CheckcheetListPage = () => {
         onChange: onSelectChange,
     };
 
-    const handleButtonClick = (status) => {
-        navigate('/edit');
-    };
+    // const handleButtonClick = (status) => {
+    //     navigate('/edit');
+    // };
 
     const handleCreateButtonClick = () => {
         setIsEdit(false);

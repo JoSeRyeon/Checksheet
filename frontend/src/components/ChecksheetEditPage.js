@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import SectionCard from './Sections/SectionCard';
-import { Layout, Input, Button, Space, message } from 'antd';
+import { Layout, Button, Space, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useLocation, useNavigate } from 'react-router-dom';
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 
 const CheckcheetEditPage = () => {
   const location = useLocation();
    const navigate = useNavigate();
-  const { selectedChecksheet, selectedChecksheetId } = location.state || {};
+  const { selectedChecksheetId } = location.state || {};
 
   const [sectionCards, setSectionCards] = useState([]);
   const [checksheetName, setChecksheetName] = useState('');
-  const [category, setCategory] = useState('');
+  // const [category, setCategory] = useState('');
 
   // -------------------
   // 데이터 불러오기
@@ -38,22 +38,22 @@ const CheckcheetEditPage = () => {
   // -------------------
   // 1️⃣ 체크시트 정보 업데이트
   // -------------------
-  async function updateChecksheet(id, value, data) {
-    setChecksheetName(value);
-    await axios.put(`http://localhost:5000/api/checksheet/${id}`, {
-      category : data.category,
-      checksheetName : value,
-      status : data.status,
+  // async function updateChecksheet(id, value, data) {
+  //   setChecksheetName(value);
+  //   await axios.put(`http://localhost:5000/api/checksheet/${id}`, {
+  //     category : data.category,
+  //     checksheetName : value,
+  //     status : data.status,
 
-    })
-      .then(res => {
-        // success('수정이 완료되었습니다.');
-      })
-      .catch((err) => {
-        message.error('체크시트 수정에 실패하였습니다. 다시 시도해주세요');
-        console.error(err);
-      });
-  }
+  //   })
+  //     .then(res => {
+  //       // success('수정이 완료되었습니다.');
+  //     })
+  //     .catch((err) => {
+  //       message.error('체크시트 수정에 실패하였습니다. 다시 시도해주세요');
+  //       console.error(err);
+  //     });
+  // }
 
   
   // -------------------

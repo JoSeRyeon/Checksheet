@@ -1,9 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import './styles/editor.css'
 import './styles.scss'
-import MenuBar from './MenuBar'
 
 export default function RichTextEditor({ value = '', onChange, editable = true }) {
   const editor = useEditor({
