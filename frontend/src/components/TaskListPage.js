@@ -21,6 +21,7 @@ const TaskListPage = () => {
 
   useEffect(() => {
     fetchTasks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 작업 리스트 가져오기
@@ -32,7 +33,6 @@ const TaskListPage = () => {
       console.error(err);
       error('작업 목록을 가져오지 못했습니다.');
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   };
 
   // 선택 변경
