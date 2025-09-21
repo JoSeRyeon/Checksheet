@@ -29,6 +29,7 @@ const ChecksheetInputForm = ({ onClose, isEditMode, selectedData }) => {
       onReset();
       form.setFieldsValue({ status: '1' }); // 기본값 설정
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEditMode, selectedData, form]);
 
   const onFinish = async (values) => {
