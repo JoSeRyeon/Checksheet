@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SectionCard from './Sections/SectionCard';
 import { Layout, Button, Space, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import axios from 'axios';
+import api from '../api/axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 const { Header, Content } = Layout;
 
@@ -21,7 +21,7 @@ const CheckcheetEditPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/checksheet/${selectedChecksheetId}`);
+        const res = await api.get(`/checksheet/${selectedChecksheetId}`);
         setSectionCards(res.data.sections.map(sec => ({
           id: sec.id,
           data: sec
@@ -40,7 +40,7 @@ const CheckcheetEditPage = () => {
   // -------------------
   // async function updateChecksheet(id, value, data) {
   //   setChecksheetName(value);
-  //   await axios.put(`http://localhost:5000/api/checksheet/${id}`, {
+  //   await api.put(`/checksheet/${id}`, {
   //     category : data.category,
   //     checksheetName : value,
   //     status : data.status,
@@ -61,7 +61,7 @@ const CheckcheetEditPage = () => {
   // -------------------
   const addSectionCard = async () => {
     try {
-      const res = await axios.post(`http://localhost:5000/api/checksheet/${selectedChecksheetId}/sections`, {
+      const res = await api.post(`/checksheet/${selectedChecksheetId}/sections`, {
         title: '새 섹션',
         text: '',
         sort_order: sectionCards.length
@@ -78,7 +78,7 @@ const CheckcheetEditPage = () => {
   // -------------------
   const deleteSectionCard = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/checksheet/section/${id}`);
+      await api.delete(`/checksheet/section/${id}`);
       setSectionCards(prev => prev.filter(sc => sc.id !== id));
     } catch (err) {
       console.error(err);

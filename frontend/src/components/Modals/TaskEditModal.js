@@ -1,7 +1,7 @@
 // TaskEditModal.jsx
 import React, { useEffect } from 'react';
 import { Modal, Form, Input, Button } from 'antd';
-import axios from 'axios';
+import api from '../../api/axios';
 
 export default function TaskEditModal({ open, onClose, task, onSuccess }) {
   const [form] = Form.useForm();
@@ -16,7 +16,7 @@ export default function TaskEditModal({ open, onClose, task, onSuccess }) {
   const handleSubmit = async (values) => {
     try {
       // API 호출
-      await axios.put(`http://localhost:5000/api/tasks/${task.id}`,
+      await api.put(`/tasks/${task.id}`,
         { ...task, ...values }
       )
       onSuccess();   // 성공 후 목록 갱신

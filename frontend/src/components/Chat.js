@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 
 export default function Chat({ userId }) {
   const [messages, setMessages] = useState([]);
@@ -7,7 +7,7 @@ export default function Chat({ userId }) {
 
   useEffect(() => {
     const fetchMessages = () => {
-      axios.get('http://localhost:5000/api/chat').then(res => setMessages(res.data));
+      api.get('/chat').then(res => setMessages(res.data));
     };
     fetchMessages();
     // const interval = setInterval(fetchMessages, 1000);
@@ -15,7 +15,7 @@ export default function Chat({ userId }) {
   }, []);
 
   const sendMessage = () => {
-    axios.post('http://localhost:5000/api/chat', { user_id: userId, message: input })
+    api.post('/chat', { user_id: userId, message: input })
       .then((res) => {
         setInput('');
         setMessages(res.data)

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Table, Tag, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import ChecksheetInputForm from './Forms/ChecksheetInputForm';
 import StickyPageHeader from './StickyPageHeader';
+import api from '../api/axios';
 
 const columns = [
     { title: '카테고리', dataIndex: 'category' },
@@ -64,10 +64,8 @@ const CheckcheetListPage = () => {
     ============================== API 요청용 함수 START ============================== */
     // 체크시트 리스트 취득
     async function fetchChecksheetList(data) {
-        axios.get('http://localhost:5000/api/checksheet')
-            .then(res => {
-                setData(res.data);
-            })
+        api.get('/checksheet')
+            .then(res => setData(res.data))
             .catch(console.error);
     }
 
@@ -75,7 +73,7 @@ const CheckcheetListPage = () => {
     async function createChecksheet(data) {
         console.log(data);
 
-        await axios.post('http://localhost:5000/api/checksheet', data)
+        await api.post('/checksheet', data)
             .then(res => {
                 success('체크시트가 등록되었습니다.');
             })
@@ -89,7 +87,7 @@ const CheckcheetListPage = () => {
     async function updateChecksheet(data) {
         console.log(data);
         const id = data.id;
-        await axios.put(`http://localhost:5000/api/checksheet/${id}`, data)
+        await api.put(`/checksheet/${id}`, data)
             .then(res => {
                 success('수정이 완료되었습니다.');
             })
@@ -110,10 +108,6 @@ const CheckcheetListPage = () => {
         selectedRowKeys,
         onChange: onSelectChange,
     };
-
-    // const handleButtonClick = (status) => {
-    //     navigate('/edit');
-    // };
 
     const handleCreateButtonClick = () => {
         setIsEdit(false);

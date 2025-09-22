@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SectionCard from './Sections/SectionCard'; // 동일한 섹션 표시 컴포넌트 활용
 import { Layout, Button, Space, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import axios from 'axios';
+import api from '../api/axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const { Header, Content } = Layout;
@@ -37,7 +37,7 @@ const TaskExecutePage = () => {
 
   const fetchChecksheet = async (checksheetId) => {
     try {
-      const res = await axios.get(`http://localhost:5000/api/checksheet/${checksheetId}`);
+      const res = await api.get(`/checksheet/${checksheetId}`);
       setSectionCards(res.data.sections.map(sec => ({
         id: sec.id,
         data: sec
@@ -74,7 +74,7 @@ const TaskExecutePage = () => {
   // -------------------
   const handleSave = async () => {
     try {
-      await axios.post('http://localhost:5000/api/tasks/execute', {
+      await api.post('/tasks/execute', {
         tasks: selectedTasks.map(task => ({
           taskId: task.id,
           sections: sectionCards.map(sc => sc.data)

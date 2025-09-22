@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../../api/axios';
 import { Button, Form, Input, Select, Space, message } from 'antd';
 const { Option } = Select;
 
@@ -9,7 +9,7 @@ const ChecksheetInputForm = ({ onClose, isEditMode, selectedData }) => {
 
   // 상태 코드 불러오기
   useEffect(() => {
-    axios.get('http://localhost:5000/api/code', { 
+    api.get('/code', { 
       params: { category: 'checksheet_status' } 
     })
     .then(res => setStatusCode(res.data))

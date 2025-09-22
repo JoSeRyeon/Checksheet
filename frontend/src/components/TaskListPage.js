@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, message, Popconfirm } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-import axios from 'axios';
+import api from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 import TaskCreateModal from './Modals/TaskCreateModal';
 import TaskEditModal from './Modals/TaskEditModal';
@@ -27,7 +27,7 @@ const TaskListPage = () => {
   // 작업 리스트 가져오기
   const fetchTasks = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/tasks');
+      const res = await api.get('/tasks');
       setTasks(res.data);
     } catch (err) {
       console.error(err);
@@ -43,7 +43,7 @@ const TaskListPage = () => {
   // ✅ 삭제 처리
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/tasks/${id}`);
+      await api.delete(`/tasks/${id}`);
       success('삭제되었습니다.');
       fetchTasks();
     } catch (err) {

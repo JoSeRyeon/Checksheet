@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Card, Button, Checkbox, Input, Select, Space, message, Modal } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import '../../custom.css';
-import axios from 'axios';
+import api from '../../api/axios';
 import RichTextEditor from '../RichTextEditor';
 import ChecksheetItemForm from '../Forms/ChecksheetItemForm';
 
@@ -11,7 +11,7 @@ import ChecksheetItemForm from '../Forms/ChecksheetItemForm';
  * -----------------------------*/
 const ChecklistItem = ({ item, sectionId, checklistId, taskId, mode, onChange, onDelete }) => {
   const saveTaskItem = async (value) => {
-    await axios.post('http://localhost:5000/api/task/item', {
+    await api.post('/task/item', {
       taskId,
       sectionId,
       checklistId,
@@ -87,8 +87,8 @@ const SectionCard = ({ initialData, taskId, mode = 'edit', onDelete }) => {
 
   const fetchTaskData = useCallback(async () => {
     try {
-      const res = await axios.get(
-        `http://localhost:5000/api/task/${taskId}/section/${sectionInfo.id}`
+      const res = await api.get(
+        `/task/${taskId}/section/${sectionInfo.id}`
       );
       const { section, checklists: taskChecklists, items } = res.data;
 
@@ -138,8 +138,8 @@ const SectionCard = ({ initialData, taskId, mode = 'edit', onDelete }) => {
     if (mode !== 'edit') return;
     setSectionInfo((prev) => ({ ...prev, [key]: value }));
     try {
-      await axios.put(
-        `http://localhost:5000/api/checksheet/section/${sectionInfo.id}`,
+      await api.put(
+        `/checksheet/section/${sectionInfo.id}`,
         { ...sectionInfo, [key]: value }
       );
       message.success('섹션 저장 완료');
@@ -152,7 +152,7 @@ const SectionCard = ({ initialData, taskId, mode = 'edit', onDelete }) => {
     const checkedAt = nowISO(checked);
     setTaskSectionCheck({ checked, checkedAt });
     try {
-      await axios.post('http://localhost:5000/api/task/section', {
+      await api.post('/task/section', {
         taskId,
         sectionId: sectionInfo.id,
         checked,
@@ -173,7 +173,7 @@ const SectionCard = ({ initialData, taskId, mode = 'edit', onDelete }) => {
         : [...prev, { id: null, sectionId: sectionId, checklistId: clId, checked, checkedAt }]
     );
     try {
-      await axios.post('http://localhost:5000/api/task/checklist', {
+      await api.post('/task/checklist', {
         taskId,
         sectionId,
         checklistId: clId,
@@ -187,8 +187,8 @@ const SectionCard = ({ initialData, taskId, mode = 'edit', onDelete }) => {
   const addChecklist = async () => {
     if (mode !== 'edit') return;
     try {
-      const res = await axios.post(
-        `http://localhost:5000/api/checksheet/section/${sectionInfo.id}/checklists`,
+      const res = await api.post(
+        `/checksheet/section/${sectionInfo.id}/checklists`,
         { title: '새 체크리스트', text: '', sort_order: checklists.length }
       );
       setChecklists((prev) => [...prev, { ...res.data, items: [] }]);
@@ -207,8 +207,8 @@ const SectionCard = ({ initialData, taskId, mode = 'edit', onDelete }) => {
       prev.map((c) => (c.id === checklistId ? { ...c, [key]: value } : c))
     );
     try {
-      await axios.put(
-        `http://localhost:5000/api/checksheet/checklist/${checklistId}`,
+      await api.put(
+        `/checksheet/checklist/${checklistId}`,
         { [key]: value }
       );
       message.success('체크리스트 저장 완료');
@@ -220,8 +220,8 @@ const SectionCard = ({ initialData, taskId, mode = 'edit', onDelete }) => {
   const deleteChecklistAPI = async (checklistId) => {
     if (mode !== 'edit') return;
     try {
-      await axios.delete(
-        `http://localhost:5000/api/checksheet/checklist/${checklistId}`
+      await api.delete(
+        `/checksheet/checklist/${checklistId}`
       );
       setChecklists((prev) => prev.filter((c) => c.id !== checklistId));
       setTaskChecklistCheck((prev) => prev.filter((c) => c.id !== checklistId));
@@ -247,7 +247,7 @@ const SectionCard = ({ initialData, taskId, mode = 'edit', onDelete }) => {
 
     try {
       if (mode === 'edit') {
-        await axios.put(`http://localhost:5000/api/checksheet/item/${itemId}`, {
+        await api.put(`/checksheet/item/${itemId}`, {
           [key]: value,
         });
         message.success('항목 저장 완료');
@@ -260,7 +260,7 @@ const SectionCard = ({ initialData, taskId, mode = 'edit', onDelete }) => {
   const deleteItemAPI = async (checklistId, itemId) => {
     if (mode !== 'edit') return;
     try {
-      await axios.delete(`http://localhost:5000/api/checksheet/item/${itemId}`);
+      await api.delete(`/checksheet/item/${itemId}`);
       setChecklists((prev) =>
         prev.map((c) => ({
           ...c,
@@ -275,9 +275,8 @@ const SectionCard = ({ initialData, taskId, mode = 'edit', onDelete }) => {
 
   const handleAddItem = (item, checklistId) => {
     // 기존 addItem 내부 통합
-    axios
-      .post(
-        `http://localhost:5000/api/checksheet/checklist/${checklistId}/items`,
+    api.post(
+        `/checksheet/checklist/${checklistId}/items`,
         {
           title: item.title,
           type: item.type,
