@@ -7,7 +7,20 @@ import StickyPageHeader from './StickyPageHeader';
 import api from '../api/axios';
 
 const columns = [
-    { title: '카테고리', dataIndex: 'category' },
+    // { title: '카테고리', dataIndex: 'category' },
+    {
+        title: '카테고리',
+        dataIndex: 'category',
+        render: (category) => {
+            const labels = {
+                new: '신규',
+                maintenance: '유지/보수',
+                emergency: '긴급대응',
+            };
+
+            return <span>{labels[category] || category}</span>;
+        },
+    },
     { title: '체크시트명', dataIndex: 'checksheetName' },
     {
         title: '스테이터스', dataIndex: 'statusLabel',
