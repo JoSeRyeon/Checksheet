@@ -69,7 +69,7 @@ const ChecksheetInputForm = ({ onClose, isEditMode, selectedData }) => {
         rules={[{ required: true, message: '카테고리를 선택하세요' }]}
       >
         <Select placeholder="카테고리를 선택하세요">
-          <Option value="new">신규</Option>
+          <Option value="new">신규설치</Option>
           <Option value="maintenance">유지/보수</Option>
           <Option value="emergency">긴급대응</Option>
         </Select>

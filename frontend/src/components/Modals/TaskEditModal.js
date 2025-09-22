@@ -1,7 +1,8 @@
 // TaskEditModal.jsx
 import React, { useEffect } from 'react';
-import { Modal, Form, Input, Button } from 'antd';
+import { Modal, Form, Input, Button, Select } from 'antd';
 import api from '../../api/axios';
+const { Option } = Select;
 
 export default function TaskEditModal({ open, onClose, task, onSuccess }) {
   const [form] = Form.useForm();
@@ -51,7 +52,12 @@ export default function TaskEditModal({ open, onClose, task, onSuccess }) {
           name="category"
           rules={[{ required: true, message: '카테고리를 입력하세요' }]}
         >
-          <Input />
+          {/* <Input /> */}
+          <Select placeholder="카테고리를 선택하세요">
+            <Option value="new">신규설치</Option>
+            <Option value="maintenance">유지/보수</Option>
+            <Option value="emergency">긴급대응</Option>
+          </Select>
         </Form.Item>
 
         <Form.Item

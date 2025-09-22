@@ -83,7 +83,11 @@ export default function TaskCreateModal({ open, onClose, onSuccess }) {
           name="category"
           rules={[{ required: true, message: '카테고리를 입력하세요.' }]}
         >
-          <Input placeholder="카테고리 입력" />
+          <Select placeholder="카테고리를 선택하세요">
+            <Option value="new">신규설치</Option>
+            <Option value="maintenance">유지/보수</Option>
+            <Option value="emergency">긴급대응</Option>
+          </Select>
         </Form.Item>
 
         <Form.Item

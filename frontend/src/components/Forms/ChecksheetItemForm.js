@@ -92,7 +92,7 @@ const ChecksheetItemForm = ({ onSubmit, initialValues, selectedChecklistKey }) =
       {form.getFieldValue('type') === 'select' && (
         <div style={{ marginBottom: 16 }}>
           <label>옵션 관리</label>
-          <Space style={{ marginBottom: 8 }}>
+          <Space style={{ marginLeft : 12, marginBottom: 8 }}>
             <Input
               placeholder="옵션 추가"
               ref={optionInputRef}

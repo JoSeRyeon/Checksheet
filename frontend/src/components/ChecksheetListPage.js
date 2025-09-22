@@ -7,13 +7,12 @@ import StickyPageHeader from './StickyPageHeader';
 import api from '../api/axios';
 
 const columns = [
-    // { title: '카테고리', dataIndex: 'category' },
     {
         title: '카테고리',
         dataIndex: 'category',
         render: (category) => {
             const labels = {
-                new: '신규',
+                new: '신규설치',
                 maintenance: '유지/보수',
                 emergency: '긴급대응',
             };

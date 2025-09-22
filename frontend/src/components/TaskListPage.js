@@ -71,7 +71,20 @@ const TaskListPage = () => {
         </Button>
       ),
     },
-    { title: '카테고리', dataIndex: 'category', key: 'category' },
+    {
+      title: '카테고리',
+      dataIndex: 'category',
+      key: 'category',
+      render: (category) => {
+        const labels = {
+          new: '신규설치',
+          maintenance: '유지/보수',
+          emergency: '긴급대응',
+        };
+
+        return <span>{labels[category] || category}</span>;
+      },
+    },
     { title: '체크시트', dataIndex: 'checksheetName', key: 'checksheetName' },
     { title: '등록일자', dataIndex: 'createdAt', key: 'createdAt', render: (t) => t || '' },
     { title: '수정일자', dataIndex: 'updatedAt', key: 'updatedAt', render: (t) => t || '' },

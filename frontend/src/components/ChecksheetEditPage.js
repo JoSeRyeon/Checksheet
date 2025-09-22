@@ -94,14 +94,15 @@ const CheckcheetEditPage = () => {
       <Layout style={{ minHeight: '100vh' }}>
         <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', position: 'fixed', width: '100%', top: 0, zIndex: 1000, background: '#fff', boxShadow: '0 2px 8px #f0f1f2' }}>
           <Button icon={<ArrowLeftOutlined />} onClick={handleGoBack}>뒤로가기</Button>
-          <div style={{ fontSize : "22px", fontWeight : "bold", margin : "0 10px" }}>{checksheetName}</div>
+          <Space  direction="horizontal">
+            <span style={{ fontSize : "22px", fontWeight : "bold", margin : "0 10px" }}>{checksheetName}</span>
+            <Button type='primary' onClick={addSectionCard}>섹션 추가</Button>
+          </Space>
+          
         </Header>
 
-        <Content style={{ marginTop: 64, padding: '24px' }}>
-          <Space direction="vertical" style={{ width: '100%' }} size="large">
-            <div>
-              <Button onClick={addSectionCard}>섹션 추가</Button>
-            </div>
+      <Content style={{ marginTop: 64, padding: '24px' }}>
+        <Space direction="vertical" style={{ width: '100%' }} size="large">
           {sectionCards.map(sc => (
             <SectionCard
               key={sc.id}
@@ -111,7 +112,7 @@ const CheckcheetEditPage = () => {
             />
           ))}
         </Space>
-        </Content>
+      </Content>
       </Layout>
   );
 };
