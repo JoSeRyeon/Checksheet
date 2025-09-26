@@ -6,26 +6,51 @@ html, body {
   overflow-x: hidden; /* 가로 스크롤 방지 */
 }
 
+html, body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+               'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
 
 :root {
-  /* 메인 포인트 색상 */
-  --color-primary: #6f4af6;
-  --color-primary-hover: #5a38d0;
-  /* --color-primary: #1E9E82; */
-  /* --color-primary-hover: #16836B; */
+  /* dark mode */
+  --color-primary: #fff;
+  --color-primary-hover: #e0e0e0;
+  
+  --color-text-main: #fff;
+  --color-text-sub:  #fff;
+  --color-text-active: #c0bdf7;
+  --color-text-btn : black;
 
-  /* 텍스트 */
+  --color-info-bg: rgba(255, 255, 255, 0.15);
+  --color-tag-bg: rgba(255,255,255,0.2);
+  --color-shadow:  rgba(0, 0, 0, 0.1);
+  --color-shadow-primary: rgba(30, 158, 130, 0.1);
+  --color-overlay-bg: rgba(0,0,0,0.35);;
+
+  --navbar-bg: rgba(255, 255, 255, 0);
+  --navbar-border: rgba(255,255,255,0.15);
+  
+  --navbar-backdrop-filter: auto;
+
+ /* light mode */
+  /* --color-primary: #6f4af6;
+  --color-primary-hover: #5a38d0;
+  
   --color-text-main: #333333;
   --color-text-sub:  #444444;
-  --color-text-active: var(--color-primary);
+  --color-text-active: var(--color-primary); 
+  --color-text-btn : #fff;
 
-  /* 배경 */
   --color-info-bg: rgba(255, 255, 255, 0.85);
-  --color-tag-bg:  rgba(111, 74, 246, 0.1);
-  /* --color-tag-bg: rgba(30, 158, 130, 0.1); */
+  --color-tag-bg: rgba(30, 158, 130, 0.1);
   --color-shadow:  rgba(0, 0, 0, 0.1);
+  --color-shadow-primary: rgba(30, 158, 130, 0.1); 
+  --color-overlay-bg: none;
 
-    /* 버튼 그림자 */
-  --color-shadow-primary: rgba(111, 74, 246, 0.25);
-  /* --color-shadow-primary: rgba(30, 158, 130, 0.1); */
+  --navbar-bg: rgba(255, 255, 255, 0.6);
+  --navbar-border: rgba(0, 0, 0, 0.08);
+  --navbar-backdrop-filter: blur(12px);  */
 }

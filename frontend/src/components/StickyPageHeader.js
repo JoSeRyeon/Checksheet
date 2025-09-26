@@ -3,9 +3,6 @@ import { Flex, Space, Button, Typography, Select } from 'antd';
 
 const { Text, Title } = Typography;
 
-/**
- * 뷰포트 상단에, 원하는 폭으로만 고정되는 헤더
- */
 export default function StickyPageHeader({
   title = "Title",
   subtitle,
@@ -13,70 +10,60 @@ export default function StickyPageHeader({
   defaultSelectValue,
   onSelectChange,
   actions = [],
-  width = "100%"
+  width = "1200px",    // 최대 폭
 }) {
   return (
     <div
+      className="sticky-header"
       style={{
         position: 'fixed',
-        top: 80,          // 상단 네비게이션 높이에 맞게 조정
-        left: '50%',      // 가운데 정렬을 위해
+        top: 80,
+        left: '50%',
         transform: 'translateX(-50%)',
-        width,            // 고정 박스 자체의 폭을 직접 지정
+        width,
         zIndex: 1000,
         background: '#fff',
         border: '1px solid #eee',
         borderRadius: 8,
         boxShadow: '0 2px 4px rgba(0,0,0,0.08)',
-        padding: '16px 24px',
+        padding: 'clamp(12px, 2vw, 16px) clamp(16px, 4vw, 24px)',
       }}
     >
-      <Flex justify="space-between" align="center">
-        {/* 왼쪽 : 타이틀 + 서브텍스트 */}
-        <Space align="baseline">
-          <Title level={4} style={{ margin: 0, fontWeight: 600 }}>
+      <Flex
+        justify="space-between"
+        align="center"
+        wrap   // 👈 antd Flex의 wrap 옵션
+      >
+        <Space align="baseline" style={{ flexWrap: 'wrap', gap: 8 }}>
+          <Title level={4} style={{ margin: 0, fontWeight: 600, fontSize: 'clamp(16px, 3vw, 20px)' }}>
             {title}
           </Title>
           {subtitle && (
-            <Text type="secondary" style={{ fontSize: 14 }}>
+            <Text type="secondary" style={{ fontSize: 'clamp(12px, 2.5vw, 14px)' }}>
               {subtitle}
             </Text>
           )}
         </Space>
 
-        {/* 오른쪽 : 셀렉트 + 버튼 그룹 */}
-        <Space size="middle">
+        <Space size="middle" wrap>
           {selectOptions && (
             <Select
               defaultValue={defaultSelectValue || selectOptions[0]?.value}
-              style={{ width: 180 }}
+              style={{ width: 180, minWidth: 120 }}
               options={selectOptions}
               onChange={onSelectChange}
             />
           )}
-
           {actions.map((action, idx) => (
-            action.color && action.variant ? (
-              <Button
-                key={idx}
-                color={action.color}
-                variant={action.variant}
-                icon={action.icon}
-                onClick={action.onClick}
-              >
-                {action.label}
-              </Button>
-            ) : (
-              <Button
-                key={idx}
-                type={action.type || 'default'}
-                icon={action.icon}
-                onClick={action.onClick}
-              >
-                {action.label}
-              </Button>)
+            <Button
+              key={idx}
+              type={action.type || 'default'}
+              icon={action.icon}
+              onClick={action.onClick}
+            >
+              {action.label}
+            </Button>
           ))}
-
         </Space>
       </Flex>
     </div>

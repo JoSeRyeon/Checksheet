@@ -8,3 +8,47 @@
   /* 체크표시(√) 스케일링 */
   transform: rotate(45deg) scale(1.5) translate(-30%, -46%);
 }
+
+.section-item-card {
+  padding: 0 23px;
+}
+
+.checksheet-title {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 22px;
+  font-weight: bold;
+  margin: 0 10px;
+  vertical-align: middle
+}
+
+@media (max-width: 768px) {
+  .ant-card-body {
+    padding: 8px !important;
+  }
+
+  .ant-input,
+  .ant-select {
+    width: 100% !important;
+  }
+
+  .section-item-card.ant-card-ant-input {
+    width: 130px !important;
+  }
+
+  .section-item-card {
+     padding: 0 8px;
+  }
+
+  .checksheet-title {
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 468px) {
+  .checksheet-title {
+    max-width: 140px;
+  }
+}

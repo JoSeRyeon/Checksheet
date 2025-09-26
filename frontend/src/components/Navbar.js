@@ -8,8 +8,11 @@ export default function Navbar() {
     const navigate = useNavigate();
     const path = location.pathname;
 
+    // 현재 경로가 루트("/")인지 여부
+    const isMain = path === "/";
+
     return (
-        <header className="navbar">
+        <header className={`navbar${isMain ? " main" : ""}`}>
             <div className="navbar-inner">
                 <div className="nav-left">
                     <Link to="/" className="logo">
@@ -19,12 +22,6 @@ export default function Navbar() {
 
                 <div className="nav-right">
                     <nav className="nav-menu">
-                        {/* <Link
-                            to="/explain"
-                            className={path === "/explain" ? "active" : ""}
-                        >
-                            이용방법
-                        </Link> */}
                         <Link
                             to="/checksheet/list"
                             className={path.startsWith("/checksheet/list") ? "active" : ""}

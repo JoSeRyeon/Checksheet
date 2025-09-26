@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SectionCard from './Sections/SectionCard'; // 동일한 섹션 표시 컴포넌트 활용
 import { Layout, Button, Space, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
+import '../custom.css';
 import api from '../api/axios';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -108,7 +109,7 @@ const TaskExecutePage = () => {
         }}
       >
         <Button icon={<ArrowLeftOutlined />} onClick={handleGoBack}>뒤로가기</Button>
-        <div style={{ fontSize: '22px', fontWeight: 'bold', margin: '0 10px' }}>{checksheetName}</div>
+        <span className='checksheet-title'>{checksheetName}</span>
         <Button type="primary" onClick={handleSave}>작업 저장</Button>
       </Header>
 

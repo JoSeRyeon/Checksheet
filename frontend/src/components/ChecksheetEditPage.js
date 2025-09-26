@@ -3,6 +3,7 @@ import SectionCard from './Sections/SectionCard';
 import { Layout, Button, Space, message } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import api from '../api/axios';
+import '../custom.css';
 import { useLocation, useNavigate } from 'react-router-dom';
 const { Header, Content } = Layout;
 
@@ -13,7 +14,6 @@ const CheckcheetEditPage = () => {
 
   const [sectionCards, setSectionCards] = useState([]);
   const [checksheetName, setChecksheetName] = useState('');
-  // const [category, setCategory] = useState('');
 
   // -------------------
   // 데이터 불러오기
@@ -95,7 +95,7 @@ const CheckcheetEditPage = () => {
         <Header style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', position: 'fixed', width: '100%', top: 0, zIndex: 1000, background: '#fff', boxShadow: '0 2px 8px #f0f1f2' }}>
           <Button icon={<ArrowLeftOutlined />} onClick={handleGoBack}>뒤로가기</Button>
           <Space  direction="horizontal">
-            <span style={{ fontSize : "22px", fontWeight : "bold", margin : "0 10px" }}>{checksheetName}</span>
+            <span className='checksheet-title'>{checksheetName}</span>
             <Button type='primary' onClick={addSectionCard}>섹션 추가</Button>
           </Space>
           

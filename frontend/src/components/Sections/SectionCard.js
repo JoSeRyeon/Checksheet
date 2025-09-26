@@ -316,12 +316,12 @@ const SectionCard = ({ initialData, taskId, mode = 'edit', onDelete }) => {
               <Input
                 placeholder="섹션 제목 입력"
                 size="large"
-                style={{ width: 400, marginLeft: 10 }}
+                style={{ width: 400, margin: "0 10px" }}
                 value={sectionInfo.title}
                 onChange={(e) => updateSectionInfoAPI('title', e.target.value)}
               />
             ) : (
-              <div style={{ fontSize: 'large', width: 400, marginLeft: 10 }}>
+              <div style={{ fontSize: 'large', width: 400, margin: "0 10px" }}>
                 {sectionInfo.title || (
                   <span style={{ color: '#aaa' }}>제목 없음</span>
                 )}
@@ -374,14 +374,14 @@ const SectionCard = ({ initialData, taskId, mode = 'edit', onDelete }) => {
                     {mode === 'edit' ? (
                       <Input
                         placeholder="체크리스트 제목"
-                        style={{ width: 385, marginLeft: 10 }}
+                        style={{ width: 385, margin: '0 10px' }}
                         value={cl.title}
                         onChange={(e) =>
                           updateChecklistAPI(cl.id, 'title', e.target.value)
                         }
                       />
                     ) : (
-                      <div style={{ width: 385, marginLeft: 10 }}>
+                      <div style={{ width: 385, margin: "0 10px" }}>
                         {cl.title || (
                           <span style={{ color: '#aaa' }}>제목 없음</span>
                         )}
@@ -420,7 +420,7 @@ const SectionCard = ({ initialData, taskId, mode = 'edit', onDelete }) => {
               }
               style={{ marginBottom: 16 }}
             >
-              <div style={{ padding: '0 23px' }}>
+              <div className='section-item-card'>
                 {cl.items.map((item) => (
                   <ChecklistItem
                     key={item.id}
